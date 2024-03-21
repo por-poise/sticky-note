@@ -1,7 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function() { return view('top'); });
+Route::get('/register', [RegisterController::class, 'create']);
+Route::post('/register', [RegisterController::class, 'store']);
+Route::get('/login', [LoginController::class, 'create']);
+Route::post('/login', [LoginController::class, 'store']);
+Route::get('/logout', [LogoutController::class, 'store']);
+Route::get('/forgot_password', [ForgotPasswordController::class, 'show']);
+Route::post('/forgot_password', [ForgotPasswordController::class, 'send']);
+Route::get('/sent_forgot_password', function() { return view('auth.sent_forgot_password'); });
+Route::get('/reset_password', [ResetPasswordController::class, 'show']);
+Route::post('/reset_password', [ResetPasswordController::class, 'reset']);
+Route::get('/success_reset_password', function() { return view('auth.success_reset_password'); });
