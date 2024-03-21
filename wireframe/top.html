@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タスク管理 - 引っ越しタスクリスト</title>
+</head>
+
+<body>
+  <!-- #header -->
+  <nav id="header" class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">引っ越しタスクリスト</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="login.html">ログイン</a></li>
+        <li><a href="mypage.html">マイページ</a></li>
+        <li><a href="tasks.html">タスク管理</a></li>
+        <li><a href="calendar.html">カレンダー</a></li>
+        <li><a href="logout.html">ログアウト</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="login.html">ログイン</a></li>
+        <li><a href="mypage.html">マイページ</a></li>
+        <li><a href="tasks.html">タスク管理</a></li>
+        <li><a href="calendar.html">カレンダー</a></li>
+        <li><a href="logout.html">ログアウト</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2 class="header center-align">ようこそ、タスク管理アプリへ</h2>
+    <div class="row center">
+      <h5 class="header col s12 light">あなたのタスクを簡単に管理しましょう</h5>
+    </div>
+    <div class="row center">
+      <a href="login.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">始める</a>
+    </div>
+  </div>
+
+
+  <!-- script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      M.AutoInit();
+    });
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>タスク管理 - 引っ越しタスクリスト</title>
+  </head>
+
+  <body>
+    <!-- #header -->
+    <nav id="header" class="light-blue lighten-1" role="navigation">
+      <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">引っ越しタスクリスト</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="login.html">ログイン</a></li>
+          <li><a href="mypage.html">マイページ</a></li>
+          <li><a href="tasks.html">タスク管理</a></li>
+          <li><a href="calendar.html">カレンダー</a></li>
+          <li><a href="logout.html">ログアウト</a></li>
+        </ul>
+  
+        <ul id="nav-mobile" class="sidenav">
+          <li><a href="login.html">ログイン</a></li>
+          <li><a href="mypage.html">マイページ</a></li>
+          <li><a href="tasks.html">タスク管理</a></li>
+          <li><a href="calendar.html">カレンダー</a></li>
+          <li><a href="logout.html">ログアウト</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h2 class="center-align">タスク管理</h2>
+      
+      <!-- タスク追加ボタン -->
+      <div class="fixed-action-btn">
+          <a class="btn-floating btn-large red modal-trigger" href="#add-task-modal">
+              <i class="large material-icons">add</i>
+          </a>
+      </div>
+      
+      <!-- タスクリスト -->
+      <p>10 / 100件</p>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>タスク名 <i class="material-icons">arrow_downward</i></th>
+            <th>カテゴリ <i class="material-icons">arrow_downward</i></th>
+            <th>期限日 <i class="material-icons">arrow_downward</i></th>
+            <th>編集</th>
+            <th>削除</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>書類整理</td>
+            <td>仕事</td>
+            <td>2024-03-25</td>
+            <td><button class="btn waves-effect waves-light"><i class="material-icons">edit</i></button></td>
+            <td><button class="btn waves-effect waves-light red"><i class="material-icons">delete</i></button></td>
+          </tr>
+          <tr>
+            <td>家賃の支払い</td>
+            <td>プライベート</td>
+            <td>2024-03-30</td>
+            <td><button class="btn waves-effect waves-light"><i class="material-icons">edit</i></button></td>
+            <td><button class="btn waves-effect waves-light red"><i class="material-icons">delete</i></button></td>
+          </tr>
+          <tr>
+            <td>プレゼン資料作成</td>
+            <td>仕事</td>
+            <td>2024-04-05</td>
+            <td><button class="btn waves-effect waves-light"><i class="material-icons">edit</i></button></td>
+            <td><button class="btn waves-effect waves-light red"><i class="material-icons">delete</i></button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- タスク追加モーダル -->
+      <div id="add-task-modal" class="modal">
+        <div class="modal-content">
+          <h4>タスクを追加</h4>
+          <div class="row">
+            <form class="col s12">
+              <div class="row">
+                <div class="input-field col s12">
+                  <input placeholder="タスク名" id="task_name" type="text" class="validate">
+                  <label for="task_name">タスク名</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <select id="task_category" onchange="toggleCustomCategory(this)">
+                    <option value="" disabled selected>選択してください</option>
+                    <option value="1">仕事</option>
+                    <option value="2">プライベート</option>
+                    <option value="0">（新規追加）</option>
+                  </select>
+                  <label for="task_category">カテゴリ</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12" id="custom_category" style="display: none;">
+                  <input placeholder="カテゴリを入力" id="custom_category_input" type="text" class="validate">
+                  <label for="custom_category_input">カスタムカテゴリ</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s4">
+                  <input type="text" class="datepicker" id="due_date">
+                  <label for="due_date">期限日</label>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s12">
+                    <textarea placeholder="説明" id="task_description" class="materialize-textarea validate"></textarea>
+                    <label for="task_description">タスクの説明</label>
+                  </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat">追加</a>
+        </div>
+      </div>
+
+      <!-- ページネーション -->
+      <ul class="pagination center-align">
+        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+        <li class="active"><a href="#!">1</a></li>
+        <li class="waves-effect"><a href="#!">2</a></li>
+        <li class="waves-effect"><a href="#!">3</a></li>
+        <li class="waves-effect"><a href="#!">4</a></li>
+        <li class="waves-effect"><a href="#!">5</a></li>
+        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+      </ul>
+
+    </div>
+  
+    <!-- script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // モーダルの初期化
+        var modals = document.querySelectorAll('.modal');
+        M.Modal.init(modals);
+
+        // ドロップダウン（Select）の初期化
+        var selects = document.querySelectorAll('select');
+        M.FormSelect.init(selects);
+
+        // カレンダー（DatePicker）の初期化
+        var datepickers = document.querySelectorAll('.datepicker');
+        M.Datepicker.init(datepickers, {
+          format: 'yyyy-mm-dd', // 日付のフォーマット
+          autoClose: true, // 日付選択後に自動で閉じる
+        });
+      });
+
+      function toggleCustomCategory($select) {
+        var value = $select.value;
+        var $customCategory = document.querySelector('#custom_category');
+        if(value === '0') { // 「その他」が選択された場合
+          $customCategory.style.display = 'block';
+        } else {
+          $customCategory.value = '';
+          $customCategory.style.display = 'none';
+        }
+      }
+      </script>
+  </body>
+</html>
