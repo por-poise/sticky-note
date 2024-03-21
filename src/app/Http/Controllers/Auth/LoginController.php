@@ -21,7 +21,11 @@ class LoginController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        if (Auth::check()) {
+            return redirect('mypage');
+        } else {
+            return view('auth.login');
+        }
     }
 
     /**
@@ -32,7 +36,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended(RouteServiceProvider::HOME);
         }
 
         return back()->withErrors([

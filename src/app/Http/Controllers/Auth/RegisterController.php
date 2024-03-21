@@ -23,7 +23,11 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        if (Auth::check()) {
+            return redirect('mypage');
+        } else{
+            return view('auth.register');
+        }
     }
 
     /**

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use App\Models\Category;
+use App\Models\Task;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -43,5 +46,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function Tasks() {
+        return $this->hasMany(Task::class);
+    }
+
+    public function Categories() {
+        return $this->hasMany(Category::class);
     }
 }

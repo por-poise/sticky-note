@@ -1,7 +1,22 @@
+##　メモ
+
+* .env: 環境毎の設定情報等をもってる
+* routes/web.php: パスルーティング
+* `php artisan make:controller -r ***Controller`
+
 ## DB接続
 `mysql -uroot -h 127.0.0.1 -p`
 
 * .envのDB_HOSTはdocker-composeのservice nameを指定する
+
+## トラシュー
+
+* `Add [name] to fillable property to allow mass assignment on [Illuminate\Foundation\Auth\User].`
+  * fillableを設定しているのは自分が作ったUserクラスであって、ファザードの方ではない。useで自分のクラスを指定してあげればOK
+* `php artisan migrate`での`SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for db failed: nodename nor servname provided, or not known`
+  * migrateはappのcontainerから実行する必要がある `docker-compose exec app bash` -> `app artisan tinker`
+* モデルの保存時に`SQLSTATE[HY000]: General error: 1364 Field 'user_id' doesn't have a default value`
+  * Modelクラスでfillableに指定していなければフロントからもtinkerからも値がDBに渡らないから。fillableカラムを追加すればOK
 
 ## アプリ設計
 1. タスク管理:★ph.1
