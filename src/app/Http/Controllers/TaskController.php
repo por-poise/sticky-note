@@ -52,7 +52,10 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         if (!Auth::check()) {
-            return redirect('login');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'この操作にはログインが必要です。',
+            ]);
         }
         Log::debug('begin TaskController.store');
 
@@ -73,8 +76,9 @@ class TaskController extends Controller
                 'category_id' => $categoryId,
                 'name' => $request->name,
                 'due_date'=> $request->dueDate,
+                'color' => $request->color,
                 'description'=> $request->description,
-                'status' => 0,
+                'status' => $request->status,
             ]);
             return $task;
         });
@@ -99,7 +103,18 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        if (!Auth::check()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'この操作にはログインが必要です。',
+            ]);
+        }
+
+        $task = Task::where(['id' => $id])->get()[0];
+        return response()->json([
+            'status' => 'ok',
+            'task' => $task
+        ]);
     }
 
     /**
@@ -108,7 +123,10 @@ class TaskController extends Controller
     public function update(Request $request, string $id)
     {
         if (!Auth::check()) {
-            return redirect('login');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'この操作にはログインが必要です。',
+            ]);
         }
 
         Log::debug('begin TaskController.update');
@@ -131,8 +149,9 @@ class TaskController extends Controller
                 'category_id' => $categoryId,
                 'name' => $request->name,
                 'due_date'=> $request->dueDate,
+                'color' => $request->color,
                 'description'=> $request->description,
-                'status' => 0,
+                'status' => $request->status,
             ]);
         });
         

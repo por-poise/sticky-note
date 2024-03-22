@@ -2,6 +2,16 @@
 use Illuminate\Support\Facades\Auth;
 $title='タスク一覧';
 $user=Auth::user();
+
+function statusToText($status) {
+  switch ($status) {
+    case 0: return '未処理';
+    case 1: return '処理中';
+    case 2: return '処理済み';
+    case 3: return '完了';
+    default: return '';
+  }
+}
 @endphp
 
 @extends('layouts.main')
@@ -36,6 +46,7 @@ $user=Auth::user();
           <th>タスク名 <i class="material-icons">arrow_downward</i></th>
           <th>カテゴリ <i class="material-icons">arrow_downward</i></th>
           <th>期限日 <i class="material-icons">arrow_downward</i></th>
+          <th>ステータス <i class="material-icons">arrow_downward</i></th>
           <th></th>
           <th></th>
         </tr>
@@ -46,8 +57,9 @@ $user=Auth::user();
           <tr class="task" data-task-id="{{ $task->id }}" onmouseenter="toggleButtons({{ $task->id }}, true)" onmouseleave="toggleButtons({{ $task->id }}, false)">
             <td></td>
             <td class="task-name">{{ $task->name }}</td>
-            <td class="task-category" data-category-id="{{ $task->category->id }}">{{ $task->category->name }}</td>
+            <td class="task-category">{{ $task->category->name }}</td>
             <td class="task-due-date">{{ $task->due_date }}</td>
+            <td class="task-status">{{ statusToText($task->status) }}</td>
             <td><button class="btn edit-btn waves-effect waves-light hidden" onclick="editTask({{ $task->id }})"><i class="material-icons">edit</i></button></td>
             <td><button class="btn delete-btn waves-effect waves-light red hidden" onclick="deleteTask({{ $task->id }})"><i class="material-icons">delete</i></button></td>
             <td class="task-description hide">{{ $task->description }}</td>
@@ -59,11 +71,11 @@ $user=Auth::user();
         <tr class="task" data-task-id="id">
           <td></td>
           <td class="task-name"></td>
-          <td class="task-category" data-category-id=""></td>
+          <td class="task-category"></td>
           <td class="task-due-date"></td>
+          <td class="task-status"></td>
           <td><button class="btn edit-btn waves-effect waves-light hidden"><i class="material-icons">edit</i></button></td>
           <td><button class="btn delete-btn waves-effect waves-light red hidden"><i class="material-icons">delete</i></button></td>
-          <td class="task-description hide"></td>
         </tr>
       </template>
     </table>
@@ -95,15 +107,30 @@ $user=Auth::user();
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s12" id="custom-category" style="display: none;">
-                <input placeholder="カテゴリを入力" id="custom-category-input" type="text" class="validate">
-                <label for="custom-category-input">カスタムカテゴリ</label>
+              <div class="input-field col s12" id="custom-category">
+                <input placeholder="カテゴリを入力" id="task-custom-category" type="text" class="validate">
+                <label for="task-custom-category">カスタムカテゴリ</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s4">
-                <input type="text" class="datepicker" id="due-date">
-                <label for="due-date">期限日</label>
+                <input type="text" class="datepicker" id="task-due-date">
+                <label for="task-due-date">期限日</label>
+              </div>
+              <div class="input-field col s4">
+                <select id="task-color" onchange="reflectColor(this)">
+                  <option value="" disabled selected>選択してください</option>
+                </select>
+                <label for="task-color">色</label>
+              </div>
+              <div class="input-field col s4">
+                <select id="task-status">
+                  <option value="0" selected>未処理</option>
+                  <option value="1">処理中</option>
+                  <option value="2">処理済み</option>
+                  <option value="3">完了</option>
+                </select>
+                <label for="task-status">ステータス</label>
               </div>
             </div>
             <div class="row">
@@ -139,5 +166,6 @@ $user=Auth::user();
 @endsection
 
 @section('scripts')
+  <script src="{{ asset('/js/colors.js') }}"></script>
   <script src="{{ asset('/js/task.js') }}"></script>
 @endsection
