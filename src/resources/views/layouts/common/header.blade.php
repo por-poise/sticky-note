@@ -8,7 +8,7 @@
       @auth
         <li><a href="/mypage">マイページ</a></li>
         <li><a href="/tasks">タスク管理</a></li>
-        <li><a href="/calendar">カレンダー</a></li>
+        <li><a href="/tasks/calendar">カレンダー</a></li>
         <li><a href="/logout">ログアウト</a></li>
       @endauth
     </ul>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Carbon\CarbonImmutable;
 
 use App\Models\User;
 use App\Models\Category;
@@ -16,7 +17,7 @@ use App\Models\Task;
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * タスク一覧
      */
     public function index()
     {
@@ -39,15 +40,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * タスク登録
      */
     public function store(Request $request)
     {
@@ -91,15 +84,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * タスク編集
      */
     public function edit(string $id)
     {
@@ -118,7 +103,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * タスク更新
      */
     public function update(Request $request, string $id)
     {
@@ -166,7 +151,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * タスク削除
      */
     public function destroy(string $id)
     {
@@ -178,6 +163,55 @@ class TaskController extends Controller
         return response()->json([
             'status' => 'ok',
             'id' => $id,
+        ]);
+    }
+
+    /**
+     * カレンダー表示
+     */
+    public function calendar(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
+        // 基準月を取得
+        $baseMonth = null;
+        if ($request->base_month && preg_match('/[0-9]{6}/i', $request->base_month)) {
+            $baseMonth = CarbonImmutable::parse($request->base_month . '01');
+        } else {
+            $baseMonth = CarbonImmutable::parse(CarbonImmutable::now()->format('Y-m'));
+        }
+        $startDate = $baseMonth->startOfMonth();
+        $endDate = $baseMonth->endOfMonth();
+        $expandedStartDate = $startDate->addDays(-1 * $startDate->dayOfWeek());
+        $expandedEndDate = $endDate->addDays(7 - $endDate->dayOfWeek() - 1);
+
+        // タスクを取得
+        $tasks = Task::where('user_id', '=',  Auth::id())
+        ->where('due_date', '>=', $expandedStartDate)
+        ->where('due_date', '<=', $expandedEndDate)
+        ->get();
+
+        // 日付毎にタスクをグループ化
+        $groupByDueDateTasks = [];
+        foreach ($tasks as $task) {
+            $key = $task->due_date;
+            if (array_key_exists($key, $groupByDueDateTasks)) {
+                $groupByDueDateTasks[$key][] = $task;
+            } else {
+                $groupByDueDateTasks[$key] = [$task];
+            }
+        }
+
+        Log::debug($groupByDueDateTasks);
+
+        return view('tasks.calendar', [
+            'tasks' => $groupByDueDateTasks,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'expandedStartDate' => $expandedStartDate,
+            'expandedEndDate' => $expandedEndDate,
         ]);
     }
 }
